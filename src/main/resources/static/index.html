@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerenciador de Tarefas</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <header class="page-header">
+        <div>
+            <h1>Gerenciador de Tarefas</h1>
+            <p>Organize suas tarefas por dia, marque como concluída e veja as cores de prioridade.</p>
+        </div>
+    </header>
+
+    <main class="page-main">
+        <section class="form-card">
+            <h2>Nova tarefa</h2>
+            <form id="task-form">
+                <div class="field-group">
+                    <label for="titulo">Título</label>
+                    <input type="text" id="titulo" name="titulo" required minlength="3" maxlength="100" />
+                </div>
+                <div class="field-group">
+                    <label for="descricao">Descrição</label>
+                    <textarea id="descricao" name="descricao" required maxlength="500"></textarea>
+                </div>
+                <div class="row-group">
+                    <div class="field-group">
+                        <label for="prioridade">Prioridade</label>
+                        <select id="prioridade" name="prioridade" required>
+                            <option value="URGENTE">Urgente</option>
+                            <option value="MEDIANO">Mediano</option>
+                            <option value="NO_PRAZO">No Prazo</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label for="diaSemana">Dia da semana</label>
+                        <select id="diaSemana" name="diaSemana" required>
+                            <option value="SEGUNDA">Segunda</option>
+                            <option value="TERCA">Terça</option>
+                            <option value="QUARTA">Quarta</option>
+                            <option value="QUINTA">Quinta</option>
+                            <option value="SEXTA">Sexta</option>
+                            <option value="SABADO">Sábado</option>
+                            <option value="DOMINGO">Domingo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row-group">
+                    <div class="field-group">
+                        <label for="dataTarefa">Data da tarefa</label>
+                        <input type="date" id="dataTarefa" name="dataTarefa" required />
+                    </div>
+                    <div class="field-group priority-preview">
+                        <span>Etiqueta:</span>
+                        <span id="badge" class="badge badge-vermelho">URGENTE</span>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary">Adicionar tarefa</button>
+                <p class="hint">As tarefas são exibidas agrupadas pelo dia da semana.</p>
+            </form>
+        </section>
+
+        <section class="days-grid" id="dias-container"></section>
+    </main>
+
+    <template id="task-card">
+        <article class="task-card">
+            <div class="task-header">
+                <strong class="task-title"></strong>
+                <span class="task-badge"></span>
+            </div>
+            <p class="task-description"></p>
+            <div class="task-footer">
+                <span class="task-meta"></span>
+                <label class="toggle-switch">
+                    <input type="checkbox" class="task-toggle" />
+                    <span class="slider"></span>
+                    <span class="toggle-label">Concluída</span>
+                </label>
+            </div>
+        </article>
+    </template>
+
+    <script src="app.js"></script>
+</body>
+</html>
