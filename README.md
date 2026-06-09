@@ -157,12 +157,13 @@ Este projeto já está preparado para produção com um perfil `prod` que usa va
 
 ## 👥 Divisão de tarefas do grupo
 
-- Membro 1: Implementação da API e regras de negócio
-- Membro 2: Integração com banco de dados e perfis
-- Membro 3: Testes unitários e cobertura
-- Membro 4: Documentação e deploy
-- Membro 5: Validação e tratamento de erros
-- Membro 6: Revisão final e ajustes
+- Guilherme Oliveira de Santana: Implementação da API e regras de negócio
+- Henrique Soares: Integração com banco de dados e perfis
+- Kaue Bueno: Testes unitários e cobertura
+- Gabriel Lima: Documentação e deploy
+- Pedro Henrique Gomes: Validação e tratamento de erros
+- Vinicius Borges: Revisão final e ajustes
+- Lucas Cardoso: Suporte geral e integração de componentes
 
 ---
 
