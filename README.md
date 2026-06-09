@@ -4,6 +4,12 @@ API RESTful de gerenciamento de tarefas construída com Spring Boot 3 e Java 21.
 
 ---
 
+## 🎯 Objetivo do Projeto
+
+Microserviço para gerenciamento de tarefas com persistência em banco relacional, documentação OpenAPI e testes unitários.
+
+---
+
 ## 🚀 Como rodar localmente
 
 ### Pré-requisitos
@@ -13,18 +19,33 @@ API RESTful de gerenciamento de tarefas construída com Spring Boot 3 e Java 21.
 ### Rodando em modo desenvolvimento (H2)
 
 ```bash
-# Clone o projeto
-git clone https://github.com/seu-usuario/gerenciador-tarefas.git
-cd gerenciador-tarefas
-
-# Rode a aplicação (perfil dev com H2 já é o padrão)
+cd Trabalho_POO
 mvn spring-boot:run
 ```
 
 A API estará disponível em: `http://localhost:8080`
 
+### Rodando com Supabase PostgreSQL
+
+```bash
+cd Trabalho_POO
+set SUPABASE_DB_PASSWORD=SuaSenhaSupabase
+mvn spring-boot:run -Dspring-boot.run.profiles=supabase
+```
+
+### Rodando em produção com variáveis de ambiente
+
+```bash
+cd Trabalho_POO
+set SPRING_DATASOURCE_URL=jdbc:postgresql://<host>:<porta>/<banco>
+set SPRING_DATASOURCE_USERNAME=<usuario>
+set SPRING_DATASOURCE_PASSWORD=<senha>
+mvn spring-boot:run -Dspring-boot.run.profiles=prod
+```
+
 ### Links úteis em desenvolvimento
 - **Swagger UI:** http://localhost:8080/swagger-ui.html
+- **API Docs:** http://localhost:8080/api-docs
 - **Console H2:** http://localhost:8080/h2-console
   - JDBC URL: `jdbc:h2:mem:tarefasdb`
   - User: `sa` | Password: *(vazio)*
@@ -41,8 +62,19 @@ A API estará disponível em: `http://localhost:8080`
 | PUT | `/tarefas/{id}` | Atualizar |
 | DELETE | `/tarefas/{id}` | Deletar |
 | PATCH | `/tarefas/{id}/concluir` | Marcar como concluída |
+| PATCH | `/tarefas/{id}/iniciar` | Marcar como iniciada |
 | GET | `/tarefas/prioridade?prioridade=URGENTE` | Filtrar por prioridade |
-| GET | `/tarefas/dia-semana?diaSemana=SEGUNDA` | Filtrar por dia |
+| GET | `/tarefas/dia-semana?diaSemana=SEGUNDA` | Filtrar por dia da semana |
+
+---
+
+## 📄 Validações implementadas
+
+- `titulo` obrigatório com 3 a 100 caracteres
+- `descricao` obrigatória com até 500 caracteres
+- `prioridade` obrigatória
+- `diaSemana` obrigatório
+- `dataTarefa` obrigatória e não pode ser anterior à data atual
 
 ---
 
@@ -68,8 +100,11 @@ POST /tarefas
   "dados": {
     "id": 1,
     "titulo": "Estudar Java",
+    "descricao": "Revisar conceitos de Spring Boot",
     "prioridade": "URGENTE",
     "corPrioridade": "vermelho",
+    "diaSemana": "SEGUNDA",
+    "dataTarefa": "2025-12-01",
     "concluida": false
   }
 }
@@ -77,7 +112,9 @@ POST /tarefas
 
 ---
 
-## 🧪 Rodando os testes
+## 🧪 Testes unitários
+
+Execute:
 
 ```bash
 mvn test
@@ -87,22 +124,33 @@ Relatório de cobertura JaCoCo gerado em: `target/site/jacoco/index.html`
 
 ---
 
-## ☁️ Deploy no Render
+## ☁️ Deploy em Produção
 
-### Passo a passo
+Este projeto já está preparado para produção com um perfil `prod` que usa variáveis de ambiente:
 
-1. Crie uma conta em [render.com](https://render.com)
-2. Crie um banco **PostgreSQL** no Render
-3. Crie um **Web Service** apontando para este repositório
-4. Configure as variáveis de ambiente:
+- `SPRING_DATASOURCE_URL`
+- `SPRING_DATASOURCE_USERNAME`
+- `SPRING_DATASOURCE_PASSWORD`
+- `SPRING_DATASOURCE_DRIVER` (opcional, padrão: PostgreSQL)
+- `SPRING_JPA_HIBERNATE_DIALECT` (opcional)
 
-| Variável | Valor |
-|----------|-------|
-| `DATABASE_URL` | URL do PostgreSQL do Render |
-| `DATABASE_USERNAME` | Usuário do banco |
-| `DATABASE_PASSWORD` | Senha do banco |
+### Exemplo de deploy no Render ou Heroku
 
-5. O Render detecta o `Dockerfile` automaticamente e faz o deploy.
+1. Crie um serviço web Java no Render/Heroku.
+2. Configure o banco PostgreSQL.
+3. Defina as variáveis de ambiente acima no painel da plataforma.
+4. Configure o app para usar `spring.profiles.active=prod` ou inicie com `-Dspring-boot.run.profiles=prod`.
+
+---
+
+## 👥 Divisão de tarefas do grupo
+
+- Membro 1: Implementação da API e regras de negócio
+- Membro 2: Integração com banco de dados e perfis
+- Membro 3: Testes unitários e cobertura
+- Membro 4: Documentação e deploy
+- Membro 5: Validação e tratamento de erros
+- Membro 6: Revisão final e ajustes
 
 ---
 
@@ -119,4 +167,3 @@ src/main/java/com/tarefas/
 ├── exception/       # Tratamento global de erros
 └── config/          # Configuração do Swagger
 ```
-# Trabalho_POO
