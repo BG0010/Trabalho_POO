@@ -1,15 +1,17 @@
 services:
   - type: web
-    name: tarefa-api
+    name: gerenciador-tarefas-api
     env: docker
     plan: free
-    dockerfilePath: Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
+      # As variáveis abaixo utilizam sync: false por segurança para que o Render
+      # solicite os valores no painel ao invés de deixá-los expostos no repositório.
       - key: SPRING_DATASOURCE_URL
-        fromSecret: SPRING_DATASOURCE_URL
+        sync: false
       - key: SPRING_DATASOURCE_USERNAME
-        fromSecret: SPRING_DATASOURCE_USERNAME
+        sync: false
       - key: SPRING_DATASOURCE_PASSWORD
-        fromSecret: SPRING_DATASOURCE_PASSWORD
+        sync: false
+
