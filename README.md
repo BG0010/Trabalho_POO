@@ -134,12 +134,24 @@ Este projeto já está preparado para produção com um perfil `prod` que usa va
 - `SPRING_DATASOURCE_DRIVER` (opcional, padrão: PostgreSQL)
 - `SPRING_JPA_HIBERNATE_DIALECT` (opcional)
 
-### Exemplo de deploy no Render ou Heroku
+### Exemplo de deploy no Render
 
-1. Crie um serviço web Java no Render/Heroku.
-2. Configure o banco PostgreSQL.
-3. Defina as variáveis de ambiente acima no painel da plataforma.
-4. Configure o app para usar `spring.profiles.active=prod` ou inicie com `-Dspring-boot.run.profiles=prod`.
+1. Conecte o repositório GitHub à conta do Render.
+2. Crie um novo serviço Web e escolha a opção Docker.
+3. Use o `Dockerfile` do projeto e mantenha o branch principal.
+4. Adicione os secrets:
+   - `SPRING_DATASOURCE_URL`
+   - `SPRING_DATASOURCE_USERNAME`
+   - `SPRING_DATASOURCE_PASSWORD`
+5. Deixe `SPRING_PROFILES_ACTIVE` como `prod`.
+6. O `render.yaml` já está incluído no projeto para facilitar a configuração.
+
+### Exemplo de deploy no Heroku
+
+1. No Heroku, crie um app Java.
+2. Adicione o buildpack Java ou use Docker.
+3. Configure as mesmas variáveis de ambiente do perfil `prod`.
+4. Deploy do branch principal.
 
 ---
 
