@@ -9,6 +9,7 @@ import com.tarefas.exception.TarefaNotFoundException;
 import com.tarefas.repository.TarefaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TarefaService {
 
     // Injeção de dependência por construtor (gerada pelo @RequiredArgsConstructor)
@@ -30,16 +32,9 @@ public class TarefaService {
      * @return o DTO de resposta com os dados salvos
      */
     public TarefaResponseDTO criar(TarefaRequestDTO dto) {
-        // Converte o DTO para entidade
-        Tarefa tarefa = Tarefa.builder()
-                .titulo(dto.titulo())
-                .descricao(dto.descricao())
-                .prioridade(dto.prioridade())
-                .diaSemana(dto.diaSemana())
-                .dataTarefa(dto.dataTarefa())
-                .build();
+        Tarefa tarefa = new Tarefa();
+        aplicarDadosDaRequest(tarefa, dto);
 
-        // Salva no banco e retorna como DTO
         Tarefa salva = tarefaRepository.save(tarefa);
         return TarefaResponseDTO.de(salva);
     }
@@ -77,13 +72,7 @@ public class TarefaService {
      */
     public TarefaResponseDTO atualizar(Long id, TarefaRequestDTO dto) {
         Tarefa tarefa = buscarEntidadePorId(id);
-
-        // Atualiza os campos com os novos dados
-        tarefa.setTitulo(dto.titulo());
-        tarefa.setDescricao(dto.descricao());
-        tarefa.setPrioridade(dto.prioridade());
-        tarefa.setDiaSemana(dto.diaSemana());
-        tarefa.setDataTarefa(dto.dataTarefa());
+        aplicarDadosDaRequest(tarefa, dto);
 
         Tarefa atualizada = tarefaRepository.save(tarefa);
         return TarefaResponseDTO.de(atualizada);
@@ -153,5 +142,16 @@ public class TarefaService {
     private Tarefa buscarEntidadePorId(Long id) {
         return tarefaRepository.findById(id)
                 .orElseThrow(() -> new TarefaNotFoundException(id));
+    }
+
+    /**
+     * Atualiza os dados da entidade a partir do DTO de entrada.
+     */
+    private void aplicarDadosDaRequest(Tarefa tarefa, TarefaRequestDTO dto) {
+        tarefa.setTitulo(dto.titulo());
+        tarefa.setDescricao(dto.descricao());
+        tarefa.setPrioridade(dto.prioridade());
+        tarefa.setDiaSemana(dto.diaSemana());
+        tarefa.setDataTarefa(dto.dataTarefa());
     }
 }
